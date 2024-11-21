@@ -3,64 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Bookmarklet Runner</title>
+    <title>Blast - Enhanced Bookmarklet Runner</title>
     <style>
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            background-color: #f4f4f9;
+            padding: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            overflow-x: hidden;
+            animation: backgroundAnimation 10s infinite alternate;
         }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Container Styles */
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
         }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #00eaff;
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff; }
+            100% { text-shadow: 0 0 20px #00eaff, 0 0 40px #00eaff; }
+        }
+
         input, button {
-            padding: 10px;
-            margin: 5px 0;
-            width: calc(100% - 22px);
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background: #007bff;
-            color: white;
+            font-size: 1rem;
+            padding: 12px;
             border: none;
+            margin: 10px 0;
+            border-radius: 6px;
+            width: calc(100% - 24px);
+        }
+
+        input {
+            background: #1c1c1c;
+            color: #00eaff;
+            border: 2px solid #00eaff;
+        }
+
+        button {
+            background: #00eaff;
+            color: #1c1c1c;
+            font-weight: bold;
             cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
         }
+
         button:hover {
-            background: #0056b3;
+            transform: scale(1.1);
+            background: #00b5cc;
         }
+
         iframe {
             width: 100%;
             height: 500px;
-            border: 1px solid #ccc;
             margin-top: 20px;
+            border: 2px solid #00eaff;
+            border-radius: 8px;
+            animation: iframeFade 1s ease-in-out;
         }
+
+        @keyframes iframeFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #openInNewTab {
+            background: linear-gradient(135deg, #ff5f6d, #ffc371);
+            color: #1c1c1c;
+            border: none;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        #openInNewTab:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff5f6d, #ff8a80);
+        }
+
         .controls {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .controls input, .controls button {
+            flex: 1;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Enhanced Bookmarklet Runner</h1>
+        <h1>Blast Bookmarklet Runner</h1>
         <div class="controls">
             <input type="text" id="searchBox" placeholder="Enter website URL (https://example.com)">
             <button id="loadWebsite">Load Website</button>
         </div>
         <div class="controls">
             <input type="text" id="bookmarkletCode" placeholder="Enter JavaScript code">
-            <button id="executeCode">Execute</button>
+            <button id="executeCode">Execute Code</button>
         </div>
-        <iframe id="iframeViewer"></iframe>
+        <iframe id="iframeViewer" title="Website Viewer"></iframe>
         <button id="openInNewTab">Open in New Tab</button>
     </div>
 
@@ -103,3 +162,4 @@
     </script>
 </body>
 </html>
+
