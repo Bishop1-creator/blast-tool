@@ -3,163 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blast - Enhanced Bookmarklet Runner</title>
+    <title>Blast - Modern Bookmarklet Runner</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: 'Arial', sans-serif;
+        /* General Reset */
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: #ffffff;
-            overflow-x: hidden;
-            animation: backgroundAnimation 10s infinite alternate;
+            box-sizing: border-box;
         }
-
-        @keyframes backgroundAnimation {
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1b1b2f, #162447, #0f3460);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow-x: hidden;
+            animation: backgroundShift 10s infinite alternate;
+        }
+        @keyframes backgroundShift {
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
 
         /* Container Styles */
         .container {
-            max-width: 900px;
-            margin: 40px auto;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s;
+        }
+        .container:hover {
+            transform: scale(1.02);
         }
 
         h1 {
-            text-align: center;
             font-size: 2.5rem;
-            color: #00eaff;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;
             animation: textGlow 2s infinite alternate;
         }
-
         @keyframes textGlow {
-            0% { text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff; }
-            100% { text-shadow: 0 0 20px #00eaff, 0 0 40px #00eaff; }
+            0% { text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff; }
+            100% { text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff; }
         }
 
         input, button {
-            font-size: 1rem;
-            padding: 12px;
-            border: none;
+            width: calc(100% - 40px);
+            padding: 15px;
             margin: 10px 0;
-            border-radius: 6px;
-            width: calc(100% - 24px);
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
         }
-
         input {
-            background: #1c1c1c;
-            color: #00eaff;
-            border: 2px solid #00eaff;
+            background: #1f4068;
+            color: white;
+            border: 2px solid #00d4ff;
+            transition: box-shadow 0.3s ease;
         }
-
+        input:focus {
+            box-shadow: 0 0 10px #00d4ff;
+            outline: none;
+        }
         button {
-            background: #00eaff;
-            color: #1c1c1c;
-            font-weight: bold;
+            background: linear-gradient(135deg, #00d4ff, #0079ff);
+            color: white;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-
         button:hover {
-            transform: scale(1.1);
-            background: #00b5cc;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.6);
         }
 
         iframe {
             width: 100%;
             height: 500px;
             margin-top: 20px;
-            border: 2px solid #00eaff;
-            border-radius: 8px;
-            animation: iframeFade 1s ease-in-out;
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            display: none;
         }
 
-        @keyframes iframeFade {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        #openInNewTab {
-            background: linear-gradient(135deg, #ff5f6d, #ffc371);
-            color: #1c1c1c;
-            border: none;
-            transition: transform 0.3s, background 0.3s;
-        }
-
-        #openInNewTab:hover {
-            transform: scale(1.1);
-            background: linear-gradient(135deg, #ff5f6d, #ff8a80);
-        }
-
-        .controls {
+        .actions {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            justify-content: space-between;
         }
-
-        .controls input, .controls button {
+        .actions button {
             flex: 1;
+            margin: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Blast Bookmarklet Runner</h1>
-        <div class="controls">
-            <input type="text" id="searchBox" placeholder="Enter website URL (https://example.com)">
-            <button id="loadWebsite">Load Website</button>
-        </div>
-        <div class="controls">
-            <input type="text" id="bookmarkletCode" placeholder="Enter JavaScript code">
-            <button id="executeCode">Execute Code</button>
-        </div>
+        <input type="text" id="urlInput" placeholder="Enter a website URL (https://example.com)">
+        <button id="loadWebsite">Load Website</button>
+        <input type="text" id="jsInput" placeholder="Enter JavaScript code">
+        <button id="executeCode">Execute JavaScript</button>
         <iframe id="iframeViewer" title="Website Viewer"></iframe>
-        <button id="openInNewTab">Open in New Tab</button>
+        <div class="actions">
+            <button id="fullScreen">Full Screen</button>
+            <button id="closeViewer">Close Viewer</button>
+        </div>
     </div>
 
     <script>
+        const urlInput = document.getElementById('urlInput');
+        const jsInput = document.getElementById('jsInput');
         const iframe = document.getElementById('iframeViewer');
+        const fullScreenButton = document.getElementById('fullScreen');
+        const closeViewerButton = document.getElementById('closeViewer');
 
+        // Load Website into Iframe
         document.getElementById('loadWebsite').addEventListener('click', () => {
-            const url = document.getElementById('searchBox').value.trim();
-            if (url) {
-                iframe.src = url;
-            } else {
-                alert('Please enter a valid URL.');
+            const url = urlInput.value.trim();
+            if (!url) {
+                alert('Please enter a URL.');
+                return;
+            }
+
+            try {
+                const validUrl = new URL(url);
+                iframe.src = validUrl.href;
+                iframe.style.display = 'block';
+            } catch {
+                alert('Invalid URL. Please try again.');
             }
         });
 
+        // Execute JavaScript in the Iframe
         document.getElementById('executeCode').addEventListener('click', () => {
-            const code = document.getElementById('bookmarkletCode').value;
-            if (iframe.contentWindow && code) {
-                try {
-                    const script = iframe.contentWindow.document.createElement('script');
-                    script.textContent = code;
-                    iframe.contentWindow.document.body.appendChild(script);
-                    alert('Code executed successfully.');
-                } catch (error) {
-                    alert('Error executing code: ' + error.message);
-                }
-            } else {
-                alert('Ensure a website is loaded and valid JavaScript code is entered.');
+            const jsCode = jsInput.value.trim();
+            if (!jsCode) {
+                alert('Please enter JavaScript code.');
+                return;
+            }
+
+            try {
+                iframe.contentWindow.eval(jsCode);
+                alert('JavaScript executed successfully.');
+            } catch (error) {
+                alert('Error executing JavaScript: ' + error.message);
             }
         });
 
-        document.getElementById('openInNewTab').addEventListener('click', () => {
-            const url = iframe.src || document.getElementById('searchBox').value.trim();
-            if (url) {
-                window.open(url, '_blank');
+        // Full-Screen Iframe
+        fullScreenButton.addEventListener('click', () => {
+            if (iframe.style.display === 'block') {
+                iframe.requestFullscreen().catch(() => alert('Full-screen mode is not supported.'));
             } else {
-                alert('Please load a website first.');
+                alert('No website loaded. Please load a website first.');
             }
+        });
+
+        // Close Iframe
+        closeViewerButton.addEventListener('click', () => {
+            iframe.style.display = 'none';
+            iframe.src = '';
         });
     </script>
 </body>
 </html>
-
