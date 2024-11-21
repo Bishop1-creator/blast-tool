@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast - Ultimate Utilities Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1b1b2f, #162447, #0f3460);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow-x: hidden;
+            animation: backgroundShift 10s infinite alternate;
+        }
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .tab {
+            background: #1f4068;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .tab:hover {
+            background: #0079ff;
+        }
+        .tab.active {
+            background: #00d4ff;
+        }
+        .panel {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .panel.active {
+            display: block;
+        }
+        input, button {
+            width: calc(100% - 40px);
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+        }
+        input {
+            background: #1f4068;
+            color: white;
+            border: 2px solid #00d4ff;
+            transition: box-shadow 0.3s ease;
+        }
+        input:focus {
+            box-shadow: 0 0 10px #00d4ff;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(135deg, #00d4ff, #0079ff);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.6);
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            display: none;
+            z-index: 0;
+        }
+
+        .devtools-ui {
+            display: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 60%;
+            height: 80%;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            overflow-y: auto;
+            cursor: move;
+            z-index: 9999;
+        }
+
+        .devtools-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .devtools-header button {
+            background: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .devtools-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .devtools-tab {
+            background: #1f4068;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .devtools-tab.active {
+            background: #00d4ff;
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            z-index: 9999;
+            display: none;
+        }
+
+        .settings-button {
+            background-color: #00d4ff;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .settings-button:hover {
+            background-color: #0079ff;
+        }
+
+        .setting {
+            margin-bottom: 10px;
+        }
+
+        .toggle-label {
+            margin-right: 10px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #00d4ff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blast Utilities Hub</h1>
+        <div class="tabs">
+            <div class="tab active" data-target="#bookmarklet">Bookmarklets</div>
+            <div class="tab" data-target="#scriptHub">Script Hub</div>
+        </div>
+
+        <!-- Bookmarklet Panel -->
+        <div class="panel active" id="bookmarklet">
+            <input type="text" id="urlInput" placeholder="Enter website URL (https://example.com)">
+            <button id="loadWebsite">Load Website</button>
+            <input type="text" id="jsInput" placeholder="Enter JavaScript code">
+            <button id="executeCode">Execute JavaScript</button>
+            <button id="evalExpression">Evaluate Expression</button>
+            <button id="inspectElements">Inspect Elements</button>
+            <iframe id="iframeViewer" title="Website Viewer" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+
+        <!-- Script Hub Panel -->
+        <div class="panel" id="scriptHub">
+            <div class="script-hub">
+                <div class="script-item" data-script="console.log('Hello World!');">Console Log Script</div>
+                <div class="script-item" data-script="document.body.style.backgroundColor = 'yellow';">Change Background Color</div>
+                <div class="script-item" data-script="alert('This is a prepared script');">Show Alert</div>
+                <div class="script-item" data-script="document.body.style.fontFamily = 'Arial';">Change Font to Arial</div>
+                <div class="script-item" data-script="document.body.style.color = 'red';">Change Text Color to Red</div>
+                <div class="script-item" data-script="document.body.style.border = '5px solid green';">Add Border</div>
+                <div class="script-item" data-script="document.body.style.transform = 'scale(1.1)';">Zoom In</div>
+                <div class="script-item" data-script="document.body.innerHTML = 'Modified by Blast Tool';">Modify Content</div>
+            </div>
+            <button id="executeScript">Execute Script</button>
+            <button id="copyScript">Copy Script</button>
+        </div>
+
+        <!-- Settings Button -->
+        <button class="settings-button" id="settingsButton">Settings</button>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settingsPanel">
+            <div class="setting">
+                <label class="toggle-label">Open Main Website in about:blank</label>
+                <label class="switch">
+                    <input type="checkbox" id="aboutBlankToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting">
+                <label class="toggle-label">Use Proxy</label>
+                <label class="switch">
+                    <input type="checkbox" id="proxyToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting">
+                <label class="toggle-label">Enable TOR</label>
+                <label class="switch">
+                    <input type="checkbox" id="torToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const loadWebsiteButton = document.getElementById('loadWebsite');
+        const urlInput = document.getElementById('urlInput');
+        const iframe = document.getElementById('iframeViewer');
+        const jsInput = document.getElementById('jsInput');
+        const executeCodeButton = document.getElementById('executeCode');
+        const evalExpressionButton = document.getElementById('evalExpression');
+        const inspectElementsButton = document.getElementById('inspectElements');
+        const executeScriptButton = document.getElementById('executeScript');
+        const copyScriptButton = document.getElementById('copyScript');
+        const settingsButton = document.getElementById('settingsButton');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const aboutBlankToggle = document.getElementById('aboutBlankToggle');
+        const proxyToggle = document.getElementById('proxyToggle');
+        const torToggle = document.getElementById('torToggle');
+
+        let openAboutBlank = false;
+        let useProxy = false;
+        let enableTor = false;
+
+        settingsButton.addEventListener('click', () => {
+            settingsPanel.style.display = settingsPanel.style.display === 'block' ? 'none' : 'block';
+        });
+
+        aboutBlankToggle.addEventListener('change', () => {
+            openAboutBlank = aboutBlankToggle.checked;
+        });
+
+        proxyToggle.addEventListener('change', () => {
+            useProxy = proxyToggle.checked;
+        });
+
+        torToggle.addEventListener('change', () => {
+            enableTor = torToggle.checked;
+        });
+
+        loadWebsiteButton.addEventListener('click', () => {
+            let url = urlInput.value;
+
+            if (openAboutBlank) {
+                iframe.src = "about:blank";
+            } else {
+                iframe.src = url;
+            }
+
+            iframe.style.display = 'block';
+        });
+
+        executeCodeButton.addEventListener('click', () => {
+            const code = jsInput.value;
+            iframe.contentWindow.eval(code);
+        });
+
+        evalExpressionButton.addEventListener('click', () => {
+            const expr = jsInput.value;
+            console.log(eval(expr));
+        });
+
+        inspectElementsButton.addEventListener('click', () => {
+            alert("DevTools can be added here in future!");
+        });
+
+        executeScriptButton.addEventListener('click', () => {
+            const script = jsInput.value;
+            iframe.contentWindow.eval(script);
+        });
+
+        copyScriptButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(jsInput.value);
+        });
+
+    </script>
+</body>
+</html>
